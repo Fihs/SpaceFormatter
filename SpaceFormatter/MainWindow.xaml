@@ -19,7 +19,7 @@
 
         <TextBlock TextTrimming="CharacterEllipsis">
             <Run Text="Path:" />
-            <Run x:Name="PathTextBlock" Text="C:\" />
+            <Run x:Name="PathTextBlock" />
         </TextBlock>
 
         <Grid Grid.Row="1" Margin="0,6">
@@ -32,11 +32,11 @@
 
             <StackPanel>
                 <Button
-                    x:Name="UseCurrentFolderButton"
+                    x:Name="UseRootFolderButton"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
-                    Click="UseCurrentFolderButton_Click"
-                    Content="Use current folder" />
+                    Click="UseRootFolderButton_Click"
+                    Content="Use root folder" />
                 <Button
                     x:Name="SelectFolderButton"
                     Margin="0,6,0,0"
@@ -78,7 +78,7 @@
 
             <StackPanel Grid.Column="3" Margin="6,0,0,0">
                 <StackPanel>
-                    <TextBlock Text="File size in bytes:" />
+                    <TextBlock Text="Temp file size in bytes:" />
                     <TextBox x:Name="FileSizeTextBox" Text="10485760" />
                 </StackPanel>
             </StackPanel>

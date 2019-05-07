@@ -11,33 +11,41 @@ namespace SpaceFormatter
     /// </summary>
     public partial class MainWindow : Window
     {
-        private ulong fileSize;
+        #region Fields
 
         private readonly OpenFileDialog fd;
-
         private readonly Random rand;
+        private ulong fileSize;
+        private string filesPath;
+        private bool isFormatting;
 
-        private string FilesPath;
+        #endregion Fields
 
-        private bool IsFormatting;
+        #region Constructor
 
         public MainWindow()
         {
-            FilesPath = System.AppDomain.CurrentDomain.BaseDirectory + @"\Temp\";
+            filesPath = System.AppDomain.CurrentDomain.BaseDirectory + @"\Temp\";
 
             rand = new Random();
 
             fd = new OpenFileDialog
             {
                 Title = "Select Folder",
-                InitialDirectory = Path.GetPathRoot(FilesPath),
+                InitialDirectory = Path.GetPathRoot(filesPath),
                 ValidateNames = false,
                 CheckFileExists = false,
                 CheckPathExists = true,
             };
 
             InitializeComponent();
+
+            PathTextBlock.Text = System.AppDomain.CurrentDomain.BaseDirectory;
         }
+
+        #endregion Constructor
+
+        #region Methods
 
         private void CreateDirectory(string path)
         {
@@ -109,9 +117,9 @@ namespace SpaceFormatter
             Dispatcher.Invoke(() => Status.Value = 0);
             Dispatcher.Invoke(() => StatusTextBlock.Text = "Creating temp folder...");
 
-            CreateDirectory(FilesPath);
+            CreateDirectory(filesPath);
 
-            var data = GetDriveFreeSpace(Path.GetPathRoot(FilesPath));
+            var data = GetDriveFreeSpace(Path.GetPathRoot(filesPath));
 
             if (data == -1 || data == 0)
             {
@@ -125,23 +133,23 @@ namespace SpaceFormatter
 
             byte[] bytes = new byte[fileSize];
 
-            IsFormatting = true;
+            isFormatting = true;
 
             for (int i = 1; i <= count; i++)
             {
-                if (!IsFormatting)
+                if (!isFormatting)
                     break;
 
                 Dispatcher.Invoke(() => Status.Value = i / ((double)count / 100));
                 Dispatcher.Invoke(() => StatusTextBlock.Text = $"Creating temp files... {i}\\{count}");
 
-                data = GetDriveFreeSpace(Path.GetPathRoot(FilesPath));
+                data = GetDriveFreeSpace(Path.GetPathRoot(filesPath));
 
                 if (data < bytes.Length)
                 {
                     bytes = new byte[data];
                     rand.NextBytes(bytes);
-                    CreateFile(FilesPath, i.ToString(), bytes);
+                    CreateFile(filesPath, i.ToString(), bytes);
                     break;
                 }
 
@@ -150,7 +158,7 @@ namespace SpaceFormatter
                     rand.NextBytes(bytes);
                 }
 
-                CreateFile(FilesPath, i.ToString(), bytes);
+                CreateFile(filesPath, i.ToString(), bytes);
 
                 Dispatcher.Invoke(() => ETCTextBlock.Text = "Estimate time: " + timer.GetEtc(i).ToString(@"hh\:mm\:ss"));
             }
@@ -159,15 +167,17 @@ namespace SpaceFormatter
             {
                 Dispatcher.Invoke(() => StatusTextBlock.Text = "Deleting temp folder...");
 
-                DeleteDirectory(FilesPath);
+                DeleteDirectory(filesPath);
             }
 
-            IsFormatting = false;
+            isFormatting = false;
 
             Dispatcher.Invoke(() => Status.Value = 100);
             Dispatcher.Invoke(() => StatusTextBlock.Text = "Completed!");
             Dispatcher.Invoke(() => ETCTextBlock.Text = String.Empty);
         }
+
+        #endregion Methods
 
         #region Clicks
 
@@ -180,7 +190,7 @@ namespace SpaceFormatter
             {
                 PathTextBlock.Text = Path.GetDirectoryName(fd.FileName);
 
-                FilesPath = PathTextBlock.Text + @"\Temp\";
+                filesPath = PathTextBlock.Text + @"\Temp\";
             }
         }
 
@@ -188,7 +198,7 @@ namespace SpaceFormatter
         {
             SelectFolderButton.IsEnabled = false;
             StartButton.IsEnabled = false;
-            UseCurrentFolderButton.IsEnabled = false;
+            UseRootFolderButton.IsEnabled = false;
             StopButton.IsEnabled = true;
             RandomDataСheckBox.IsEnabled = false;
             FileSizeTextBox.IsEnabled = false;
@@ -197,7 +207,7 @@ namespace SpaceFormatter
 
             SelectFolderButton.IsEnabled = true;
             StartButton.IsEnabled = true;
-            UseCurrentFolderButton.IsEnabled = true;
+            UseRootFolderButton.IsEnabled = true;
             StopButton.IsEnabled = false;
             RandomDataСheckBox.IsEnabled = true;
             FileSizeTextBox.IsEnabled = true;
@@ -205,14 +215,14 @@ namespace SpaceFormatter
 
         private void StopButton_Click(object sender, RoutedEventArgs e)
         {
-            IsFormatting = false;
+            isFormatting = false;
         }
 
-        private void UseCurrentFolderButton_Click(object sender, RoutedEventArgs e)
+        private void UseRootFolderButton_Click(object sender, RoutedEventArgs e)
         {
-            PathTextBlock.Text = System.AppDomain.CurrentDomain.BaseDirectory;
+            PathTextBlock.Text = Path.GetPathRoot(filesPath);
 
-            FilesPath = PathTextBlock.Text + @"\Temp\";
+            filesPath = PathTextBlock.Text + @"\Temp\";
         }
 
         #endregion Clicks
