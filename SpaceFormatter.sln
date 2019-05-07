@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.352
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpaceFormatter", "SpaceFormatter\SpaceFormatter.csproj", "{29CF6BB7-EB70-450E-A5AA-C14BC5148EDA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{29CF6BB7-EB70-450E-A5AA-C14BC5148EDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29CF6BB7-EB70-450E-A5AA-C14BC5148EDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29CF6BB7-EB70-450E-A5AA-C14BC5148EDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29CF6BB7-EB70-450E-A5AA-C14BC5148EDA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8DF25C5B-C857-4982-9595-1BA0E3425C50}
+	EndGlobalSection
+EndGlobal
