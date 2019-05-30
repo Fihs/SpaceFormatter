@@ -4,11 +4,20 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:SpaceFormatter"
     Title="SpaceFormatter"
     Width="450"
     ResizeMode="NoResize"
     SizeToContent="Height"
     mc:Ignorable="d">
+
+    <Window.DataContext>
+        <local:MainViewModel />
+    </Window.DataContext>
+
+    <Window.Resources>
+        <local:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+    </Window.Resources>
 
     <Grid Margin="6">
         <Grid.RowDefinitions>
@@ -19,7 +28,7 @@
 
         <TextBlock TextTrimming="CharacterEllipsis">
             <Run Text="Path:" />
-            <Run x:Name="PathTextBlock" />
+            <Run x:Name="PathTextBlock" Text="{Binding FilesPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         </TextBlock>
 
         <Grid Grid.Row="1" Margin="0,6">
@@ -36,13 +45,15 @@
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     Click="UseRootFolderButton_Click"
-                    Content="Use root folder" />
+                    Content="Use root folder"
+                    IsEnabled="{Binding IsFormatting, Converter={StaticResource InverseBooleanConverter}}" />
                 <Button
                     x:Name="SelectFolderButton"
                     Margin="0,6,0,0"
                     VerticalAlignment="Top"
                     Click="SelectFolderButton_Click"
-                    Content="Select Folder" />
+                    Content="Select Folder"
+                    IsEnabled="{Binding IsFormatting, Converter={StaticResource InverseBooleanConverter}}" />
             </StackPanel>
 
             <StackPanel Grid.Column="1" Margin="6,0,0,0">
@@ -52,7 +63,8 @@
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     Click="StartButton_Click"
-                    Content="Start" />
+                    Content="Start"
+                    IsEnabled="{Binding IsFormatting, Converter={StaticResource InverseBooleanConverter}}" />
                 <Button
                     x:Name="StopButton"
                     Width="75"
@@ -61,25 +73,29 @@
                     VerticalAlignment="Top"
                     Click="StopButton_Click"
                     Content="Stop"
-                    IsEnabled="False" />
+                    IsEnabled="{Binding IsFormatting}" />
             </StackPanel>
 
             <StackPanel Grid.Column="2" Margin="6,0,0,0">
                 <CheckBox
                     x:Name="DeleteTempCheckBox"
                     Content="Delete temp folder?"
-                    IsChecked="True" />
+                    IsChecked="{Binding DeleteTemp, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 <CheckBox
                     x:Name="RandomDataСheckBox"
                     Margin="0,10,0,0"
                     Content="Random data?"
-                    IsChecked="True" />
+                    IsChecked="{Binding RandomData, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    IsEnabled="{Binding IsFormatting, Converter={StaticResource InverseBooleanConverter}}" />
             </StackPanel>
 
             <StackPanel Grid.Column="3" Margin="6,0,0,0">
                 <StackPanel>
                     <TextBlock Text="Temp file size in bytes:" />
-                    <TextBox x:Name="FileSizeTextBox" Text="10485760" />
+                    <TextBox
+                        x:Name="FileSizeTextBox"
+                        IsEnabled="{Binding IsFormatting, Converter={StaticResource InverseBooleanConverter}}"
+                        Text="{Binding FileSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 </StackPanel>
             </StackPanel>
         </Grid>
@@ -91,13 +107,17 @@
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
 
-                <TextBlock x:Name="StatusTextBlock" />
+                <TextBlock x:Name="StatusTextBlock" Text="{Binding StatusText}" />
                 <TextBlock
                     x:Name="ETCTextBlock"
                     Grid.Column="1"
+                    Text="{Binding EstimateTime}"
                     TextAlignment="Right" />
             </Grid>
-            <ProgressBar x:Name="Status" Height="10" />
+            <ProgressBar
+                x:Name="Status"
+                Height="10"
+                Value="{Binding StatusProgress}" />
         </StackPanel>
     </Grid>
 </Window>
