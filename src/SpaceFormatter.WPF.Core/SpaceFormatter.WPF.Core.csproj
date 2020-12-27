@@ -1,0 +1,43 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <AssemblyName>SpaceFormatter</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\SpaceFormatter.WPF.Shared\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SpaceFormatter.Core\SpaceFormatter.Core.csproj" />
+  </ItemGroup>
+
+  <Import Project="..\SpaceFormatter.WPF.Shared\SpaceFormatter.WPF.Shared.projitems" Label="Shared" />
+
+  <ItemGroup>
+    <Compile Remove="C:\Users\Fihs\source\repos\SpaceFormatter\src\SpaceFormatter.WPF.Shared\Resources.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="C:\Users\Fihs\source\repos\SpaceFormatter\src\SpaceFormatter.WPF.Shared\Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Update="C:\Users\Fihs\source\repos\SpaceFormatter\src\SpaceFormatter.WPF.Shared\Properties\SharedResources.Designer.cs">
+      <DesignTime>True</DesignTime>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="C:\Users\Fihs\source\repos\SpaceFormatter\src\SpaceFormatter.WPF.Shared\Properties\SharedResources.resx">
+      <LastGenOutput>SharedResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>
