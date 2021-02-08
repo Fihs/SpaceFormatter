@@ -9,7 +9,7 @@
     x:Name="Window"
     Title="SpaceFormatter"
     Width="450"
-    ResizeMode="NoResize"
+    ResizeMode="CanMinimize"
     SizeToContent="Height"
     mc:Ignorable="d">
 
@@ -23,6 +23,10 @@
         </Style>
     </Window.Resources>
 
+    <Window.TaskbarItemInfo>
+        <TaskbarItemInfo ProgressState="Normal" ProgressValue="{Binding Progress.Percentage, Mode=OneWay}" />
+    </Window.TaskbarItemInfo>
+
     <Grid Margin="4">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -30,7 +34,7 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <TextBlock TextTrimming="CharacterEllipsis">
+        <TextBlock TextTrimming="CharacterEllipsis" ToolTip="{Binding Path}">
             <Run Text="{x:Static p:Resources.PathText}" />
             <Run Text="{Binding Path, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         </TextBlock>
@@ -57,18 +61,38 @@
                     Content="{x:Static p:Resources.SelectFolderText}" />
             </StackPanel>
 
-            <StackPanel Grid.Column="1" Margin="4,0,0,0">
+            <StackPanel
+                Grid.Column="1"
+                Margin="4,0,0,0"
+                VerticalAlignment="Center">
                 <Button
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
                     Command="{Binding StartCommand}"
-                    Content="{x:Static p:Resources.StartText}" />
+                    Content="{x:Static p:Resources.StartText}"
+                    IsDefault="True">
+                    <Button.Style>
+                        <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="{x:Type Button}">
+                            <Style.Triggers>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
                 <Button
-                    Margin="0,4,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
                     Command="{Binding StopCommand}"
-                    Content="{x:Static p:Resources.StopText}" />
+                    Content="{x:Static p:Resources.StopText}"
+                    IsDefault="True">
+                    <Button.Style>
+                        <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="{x:Type Button}">
+                            <Style.Triggers>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
             </StackPanel>
 
             <StackPanel Grid.Column="2" Margin="4,0,0,0">
